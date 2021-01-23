@@ -1,7 +1,7 @@
 import xlsxwriter
 import re
 def get_all_info():
-    f = open("wmass1.out","r",encoding="gbk")
+    f = open("wmass.out","r",encoding="gbk")
     return f.read()
 def get_block_info(pattern_mode):
     pattern = re.compile(pattern_mode,re.M|re.S)
