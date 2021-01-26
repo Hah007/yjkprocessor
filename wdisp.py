@@ -5,6 +5,8 @@ Prompt:code in python3.7 env
 '''
 import xlsxwriter
 import re
+import pandas as pd
+import matplotlib.pyplot as plt
 #提供抓取数据的文件名及路径
 f_name="wdisp.out"
 
@@ -17,6 +19,19 @@ def get_block_info(pattern_mode):
     pattern = re.compile(pattern_mode,re.M|re.S)
     info = pattern.findall(get_all_info())
     return info
+def convert_to_float(frac_str):
+    try:
+        return float(frac_str)
+    except ValueError:
+        num, denom = frac_str.split('/')
+        try:
+            leading, num = num.split(' ')
+            whole = float(leading)
+        except ValueError:
+            whole = 0
+        frac = float(num) / float(denom)
+        return whole - frac if whole < 0 else whole + frac
+
 def data_into_xls(xls_filename,data_filename):
     # 生成excel文件并写入数据
     workbook = xlsxwriter.Workbook("%s.xlsx"%xls_filename)
@@ -63,17 +78,45 @@ def get_X_Equivalent_Disp_info(filename,pattern_mode):
     # X_E_Dispangle=lines[4:6]
     for i in range(len(lines)):
         tt=lines[i]
-        stringtemp1 =tt[0:5]
-        nostringtemp = ''.join(stringtemp1.split())
-        floor.append(nostringtemp)       
-        stringtemp =tt[49:55]
-        nostringtemp = ''.join(stringtemp.split())
-        X_E_Dispangle.append(nostringtemp)
+        if i >1:
+            if  i%2==1:
+                stringtemp =tt[49:55]
+                nostringtemp = ''.join(stringtemp.split())
+                nostringtemp=convert_to_float(nostringtemp)
+                X_E_Dispangle.append(nostringtemp)
+            else:
+                stringtemp1 =tt[0:5]
+                nostringtemp = ''.join(stringtemp1.split())
+                nostringtemp=convert_to_float(nostringtemp)
+                floor.append(nostringtemp)       
+
     print("**********")
     print(floor)
     print("**********")      
     print(X_E_Dispangle)       
     print("**********")
+    pd1=pd.DataFrame(floor,columns=['A'])
+    pd2=pd.DataFrame(X_E_Dispangle,columns=['B'])
+    print(pd1)
+    print(pd1.dtypes)
+    # pd.to_numeric(pd1, errors='coerce')
+    # pd.to_numeric(pd2, errors='coerce')
+    pd3=pd.concat([pd1,pd2],axis=1)
+    pd4=pd3[1:]
+    print(pd4)
+    print('na'*20)
+    print(pd4.dtypes)
+    print('nb'*20)
+    print(pd4['A'])
+ 
+    # pd4['B'].plot.barh(stacked=True)
+    pd4.plot.barh(stacked=True)
+    # pd4[1].plot.line(subplots=True)
+    plt.show()
+    time.sleep(2)
+    # pd3.plot.bar(stacked=True)
+    
+
     #     if i>1:
     #         lines = i.strip()
 
