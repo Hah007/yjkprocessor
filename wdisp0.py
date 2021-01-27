@@ -5,6 +5,10 @@ Prompt:code in python3.7 env
 '''
 import xlsxwriter
 import re
+import pandas as pd
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('max_colwidth',100)
 #提供抓取数据的文件名及路径
 f_name="wdisp.out"
 
@@ -56,11 +60,21 @@ def get_X_Equivalent_Disp_info(filename,pattern_mode):
     g = open("%s.txt"%filename,"r",encoding="utf-8")
     lines = g.readlines()
     print(lines)
-    print("&&&&&&")
+    print("&&&&&&"*5)
     lines = lines[2:]
     lines = lines[:-2]
     del lines[2]
     # X_E_Dispangle=lines[4:6]
+    # colu=['A','B','C','D','E','F','G','H']
+    # pd1=pd.DataFrame(lines)
+    # # pd11=pd1.reindex(columns=colu)
+    # print(pd1)
+    # print (pd1.shape[0],pd1.shape[1],len(pd1))
+    # pd11=pd1.fillna(method='ffill')
+    # # pd11=pd1.fillna(0)  
+    # print('pd11'*10)
+    # print(pd1.iloc[:6])
+    # print(pd11.isna())
     for i in range(len(lines)):
         tt=lines[i]
         stringtemp1 =tt[0:5]
@@ -74,6 +88,19 @@ def get_X_Equivalent_Disp_info(filename,pattern_mode):
     print("**********")      
     print(X_E_Dispangle)       
     print("**********")
+    res1=['-' if x=='' else x for x in floor]
+    res2=['-' if x=='' else x for x in X_E_Dispangle]
+    print('res'*10)
+    pd1=pd.DataFrame(res1) 
+    pd2=pd.DataFrame(res2) 
+    pd11=pd.concat([pd1,pd2],axis=1)
+    print(pd1) 
+    print (pd1.shape[0],pd1.shape[1],len(pd1))  
+    print(pd2)
+    print(pd11)
+    print (pd11.shape[0],pd11.shape[1],len(pd11))
+
+  
     #     if i>1:
     #         lines = i.strip()
 
