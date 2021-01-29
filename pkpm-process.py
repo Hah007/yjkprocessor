@@ -175,3 +175,4 @@ if __name__ == "__main__":
         ToExcel(j,'pkpm_output%s.xlsx'%i)
     for i,j in enumerate(result):
         print("地震波%s基底剪力:x方向%s  y方向%s"%(i,j[4].max(),j[5].max()))
+# 测试
