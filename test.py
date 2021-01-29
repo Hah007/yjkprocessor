@@ -27,7 +27,7 @@ def convert_to_float(frac_str):
         frac = float(num) / float(denom)
         return whole - frac if whole < 0 else whole + frac
 
-ic(convert_to_float('1/888'))
+ic(convert_to_float('1/1088'))
 # import re
 
 # from numpy.core.fromnumeric import partition
