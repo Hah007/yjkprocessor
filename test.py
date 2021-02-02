@@ -49,3 +49,6 @@ plt.figure(figsize=(6,6),dpi=100)
 x = [1,2,3]
 plt.plot(x, x)
 plt.show()
+
+
+# ******
