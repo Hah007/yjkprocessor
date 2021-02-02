@@ -171,24 +171,7 @@ def get_X_Wind_Disp_info(filename,pattern_mode):
     # print('***'*20)
     # print(pd3.dtypes)
     drawing(filename,pd3)
-    # plt.figure(figsize=(5,6),dpi=200)
-    # plt.title('最大层位移角和限值')
-    # plt.xlabel('位移角')
-    # plt.ylabel('楼层')
-    # plt.plot([0.001,0.001],[1,31],label='位移角限值')
-    # plt.plot(pd3['位移角'],pd3['楼层'],label='层位移角')
-    # x = (0.0002,0.0005,0.00067,0.001,0.00125)
-    # x_lable=('1/5000','1/2000','1/1500','1/1000','1/800')
-    # plt.xticks(x,x_lable)
-    # plt.legend()
-    # filepath1="%s.png" %filename
-    # plt.savefig(filepath1)
-    # plt.show()  
-    # # print(pd3.info())
-    # # print('#'*20)
-    # filepath="%s.xls" %filename
-    # pd3.to_excel(filepath,sheet_name='sheet1')
-
+ 
 
     g = open("%s.txt"%filename,"w",encoding="utf-8")
     for i in lines:
