@@ -42,37 +42,7 @@ def convert_to_float(frac_str):
             whole = 0
         frac = float(num) / float(denom)
         return whole - frac if whole < 0 else whole + frac
-
-def data_into_xls(xls_filename,data_filename):
-    # 生成excel文件并写入数据
-    workbook = xlsxwriter.Workbook("%s.xlsx"%xls_filename)
-    worksheet = workbook.add_worksheet()
-    f = open("%s.txt"%data_filename,"r",encoding="utf-8")
-    lines = f.readlines()
-    # print("读取中")
-    # print(lines)
-    lines = [i.strip().split() for i in lines]
-    title = lines[0]
-    data = lines[1:]
-    # print(title)
-    # print(data)
-    formatter = workbook.add_format()
-    formatter.set_border(1)
-    formatter.set_align("center")
-    title_formatter = workbook.add_format()
-    title_formatter.set_border(1)
-    title_formatter.set_bg_color('#cccccc')
-    title_formatter.set_align('center')
-    title_formatter.set_bold()
-    ave_formatter = workbook.add_format()
-    ave_formatter.set_border(1)
-    ave_formatter.set_align('center')
-    ave_formatter.set_num_format('0.00')
-    worksheet.write_row('A1',title,title_formatter)
-    for i in range(2,len(data)+2):
-        worksheet.write_row('A{}'.format(i),data[i-2],formatter)
-    workbook.close()
-    
+  
 def get_X_Equivalent_Disp_info(filename,pattern_mode):
     X_E_Dispangle = []
     X_E_Dispangle_f = []  
@@ -119,7 +89,6 @@ def get_X_Equivalent_Disp_info(filename,pattern_mode):
     # pd3['位移角'].plot.line(subplots=True)
     # plt.show()
     # time.sleep(1)
-
     # filepath="%s.xls" %filename
     # pd3.to_excel(filepath,sheet_name='sheet1')
 
@@ -202,10 +171,16 @@ def drawing(filename,data):
 
 if __name__ == '__main__':
     get_X_Equivalent_Disp_info("X方向地震作用下的楼层最大位移","X 方向地震作用下的楼层最大位移(.*?)X向最大层间位移角")
+    get_X_Equivalent_Disp_info("Y方向地震作用下的楼层最大位移","Y 方向地震作用下的楼层最大位移(.*?)Y向最大层间位移角")
+    # get_X_Wind_Disp_info("+X方向风荷载作用下的楼层最大位移","(\+)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角")
+    # get_X_Wind_Disp_info("-X方向风荷载作用下的楼层最大位移","(\-)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角")
+    # get_X_Wind_Disp_info("+Y方向风荷载作用下的楼层最大位移","(\+)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角")
+    # get_X_Wind_Disp_info("-Y方向风荷载作用下的楼层最大位移","(\-)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角")
+
     # data_into_xls("X方向地震作用下的楼层最大位移",get_X_Equivalent_Disp_info("disp_1","X 方向地震作用下的楼层最大位移(.*?)X向最大层间位移角"))
     # data_into_xls("Y方向地震作用下的楼层最大位移",get_X_Equivalent_Disp_info("disp_2","Y 方向地震作用下的楼层最大位移(.*?)Y向最大层间位移角"))
     # data_into_xls("+X方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_31","(\+)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角"))
-    # data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_32","(\-)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角"))
+    # data_into_xls("-X方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_32","(\-)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角"))
     # data_into_xls("+Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_33","(\+)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))
-    # data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_34","(\-)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))   
+    # data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_33","(\+)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))   
 
