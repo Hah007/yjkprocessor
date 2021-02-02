@@ -12,22 +12,24 @@
 # df.plot.line(subplots=True)
 # plt.show()
 # time.sleep(2)
-from icecream import ic
-ic.configureOutput(includeContext=True)
-def convert_to_float(frac_str):
-    try:
-        return float(frac_str)
-    except ValueError:
-        num, denom = frac_str.split('/')
-        try:
-            leading, num = num.split(' ')
-            whole = float(leading)
-        except ValueError:
-            whole = 0
-        frac = float(num) / float(denom)
-        return whole - frac if whole < 0 else whole + frac
+# import pretty_errors
+# from icecream import ic
+# ic.configureOutput(includeContext=True)
+# def convert_to_float(frac_str):
+#     try:
+#         return float(frac_str)
+#     except ValueError:
+#         num, denom = frac_str.split('/')
+#         try:
+#             leading, num = num.split(' ')
+#             whole = float(leading)
+#         except ValueError:
+#             whole = 0
+#         frac = float(num) / float(denom)
+#         return whole - frac if whole < 0 else whole + frac
 
-ic(convert_to_float('1/1088'))
+# ic(convert_to_float('1/44'))
+# print('hello'+p)
 # import re
 
 # from numpy.core.fromnumeric import partition
@@ -40,3 +42,10 @@ ic(convert_to_float('1/1088'))
 # print(o.group())
 # print(o)
 
+from matplotlib import pyplot as plt
+ 
+plt.figure(figsize=(10,5),dpi=80)
+ 
+x = [1,2,3]
+plt.plot(x, x)
+plt.show()

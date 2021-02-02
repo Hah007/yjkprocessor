@@ -1,15 +1,19 @@
 '''
-Descroption:提取盈建科后处理中Wdisp.out数据
-Author:hah007
-Prompt:code in python3.7 env
+    Descroption:提取盈建科后处理中Wdisp.out数据
+    Author:hah007
+    Prompt:code in python3.7 env
 '''
 import xlsxwriter
 import time
-import xlwt
 import re
 import pandas as pd
 import matplotlib.pyplot as plt
 from icecream import ic
+import pretty_errors
+plt.rcParams['font.sans-serif'] = ['KaiTi']
+plt.rcParams['font.serif'] = ['KaiTi']
+plt.rcParams['axes.unicode_minus'] = False # 解决保存图像是负号'-'显示为方块的问题,或者转换负号为字符串
+
 pd.set_option('display.max_columns', None)
 pd.set_option('display.max_rows', None)
 pd.set_option('max_colwidth',100)
@@ -100,25 +104,24 @@ def get_X_Equivalent_Disp_info(filename,pattern_mode):
                 # nostringtemp=convert_to_float(nostringtemp)
                 floor.append(nostringtemp)       
     pd1=pd.DataFrame(floor,columns=['楼层'])
-    # pd1=pd.to_numeric(pd1['楼层'])    
+    pd1=pd.to_numeric(pd1['楼层'])    
     pd2=pd.DataFrame(X_E_Dispangle,columns=['位移角'])
     pd21=pd.DataFrame(X_E_Dispangle_f,columns=['分数位移角'])
-    # pd.to_numeric(pd1, errors='coerce')
-    # pd.to_numeric(pd2, errors='coerce')
     pd3=pd.concat([pd1,pd2,pd21],axis=1)
     ic(pd3)
-    print('***'*20)
-    print(pd3.dtypes)
-    pd3['楼层']=pd3['楼层'].astype('int64')
-    print(pd3.info())
-    print('123'*5)
-    print(pd3)
-    pd3['位移角'].plot.line(subplots=True)
-    plt.show()
-    time.sleep(1)
+    drawing(filename,pd3)
+    # print('***'*20)
+    # print(pd3.dtypes)
+    # pd3['楼层']=pd3['楼层'].astype('int64')
+    # print(pd3.info())
+    # print('123'*5)
+    # print(pd3)
+    # pd3['位移角'].plot.line(subplots=True)
+    # plt.show()
+    # time.sleep(1)
 
-    filepath="%s.xls" %filename
-    pd3.to_excel(filepath,sheet_name='sheet1')
+    # filepath="%s.xls" %filename
+    # pd3.to_excel(filepath,sheet_name='sheet1')
 
 
     g = open("%s.txt"%filename,"w",encoding="utf-8")
@@ -165,19 +168,27 @@ def get_X_Wind_Disp_info(filename,pattern_mode):
     pd21=pd.DataFrame(X_W_Dispangle_f,columns=['分数位移角'])
     pd3=pd.concat([pd1,pd2,pd21],axis=1)
     ic(pd3)
-    print('***'*20)
-    print(pd3.dtypes)
-    pd3['位移角'].plot.line(subplots=True)
-    plt.show()
-    time.sleep(1)
-    # pd3['分数位移角']=pd.to_numeric(pd3['分数位移角'])
-    print(pd3.info())
-    print('#'*20)
-    filepath="%s.xls" %filename
-    # writer = pd.ExcelWriter(filepath)
-    pd3.to_excel(filepath,sheet_name='sheet1')
-    # writer.save()
-    # writer.close()
+    # print('***'*20)
+    # print(pd3.dtypes)
+    drawing(filename,pd3)
+    # plt.figure(figsize=(5,6),dpi=200)
+    # plt.title('最大层位移角和限值')
+    # plt.xlabel('位移角')
+    # plt.ylabel('楼层')
+    # plt.plot([0.001,0.001],[1,31],label='位移角限值')
+    # plt.plot(pd3['位移角'],pd3['楼层'],label='层位移角')
+    # x = (0.0002,0.0005,0.00067,0.001,0.00125)
+    # x_lable=('1/5000','1/2000','1/1500','1/1000','1/800')
+    # plt.xticks(x,x_lable)
+    # plt.legend()
+    # filepath1="%s.png" %filename
+    # plt.savefig(filepath1)
+    # plt.show()  
+    # # print(pd3.info())
+    # # print('#'*20)
+    # filepath="%s.xls" %filename
+    # pd3.to_excel(filepath,sheet_name='sheet1')
+
 
     g = open("%s.txt"%filename,"w",encoding="utf-8")
     for i in lines:
@@ -185,11 +196,33 @@ def get_X_Wind_Disp_info(filename,pattern_mode):
     g.close()
     return filename
 
+def drawing(filename,data):
+    file_png="%s.png" %filename
+    file_excel="%s.xls" %filename
+    data.to_excel(file_excel,sheet_name='sheet1')  
+    plt.figure(figsize=(5,6),dpi=150)
+    plt.title(filename)
+    plt.xlabel('位移角')
+    plt.ylabel('楼层')
+    plt.plot([0.001,0.001],[1,31],label='位移角限值')
+    plt.plot(data['位移角'],data['楼层'],label='层位移角')
+    x = (0.0002,0.0005,0.00067,0.001,0.00125)
+    x_lable=('1/5000','1/2000','1/1500','1/1000','1/800')
+    # y=(0,5,10,15,20,25,30,35)
+    plt.xticks(x,x_lable)
+    # plt.yticks(y)
+    plt.legend()
+    filepath1="%s.png" %filename
+    plt.savefig(file_png)
+    plt.show()  
+    return
+
 if __name__ == '__main__':
+    get_X_Equivalent_Disp_info("X方向地震作用下的楼层最大位移","X 方向地震作用下的楼层最大位移(.*?)X向最大层间位移角")
     # data_into_xls("X方向地震作用下的楼层最大位移",get_X_Equivalent_Disp_info("disp_1","X 方向地震作用下的楼层最大位移(.*?)X向最大层间位移角"))
     # data_into_xls("Y方向地震作用下的楼层最大位移",get_X_Equivalent_Disp_info("disp_2","Y 方向地震作用下的楼层最大位移(.*?)Y向最大层间位移角"))
     # data_into_xls("+X方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_31","(\+)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角"))
     # data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_32","(\-)X 方向风荷载作用下的楼层最大位移(.*?)X向最大层间位移角"))
     # data_into_xls("+Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_33","(\+)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))
-    data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_34","(\-)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))   
+    # data_into_xls("-Y方向风荷载作用下的楼层最大位移",get_X_Wind_Disp_info("disp_34","(\-)Y 方向风荷载作用下的楼层最大位移(.*?)Y向最大层间位移角"))   
 
