@@ -44,7 +44,7 @@
 
 from matplotlib import pyplot as plt
  
-plt.figure(figsize=(10,5),dpi=80)
+plt.figure(figsize=(6,6),dpi=100)
  
 x = [1,2,3]
 plt.plot(x, x)
