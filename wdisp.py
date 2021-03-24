@@ -72,7 +72,7 @@ def drawing(filename, data):
 
 def drawing2(filename, data):
     file_png = "%s.png" % filename
-    file_excel = "%s.xls" % filename
+    file_excel = "%s.xlsx" % filename
     data.to_excel(file_excel, sheet_name='sheet1')
     plt.figure(figsize=(5, 6), dpi=150)
     plt.title(filename)
